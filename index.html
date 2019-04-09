@@ -42,10 +42,9 @@
           <h1 class="mb-5">Late, but never delay!</h1>
         </div>
         <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
-          <form id="gform" method="post" action="https://script.google.com/macros/s/AKfycbz8_nt5KG33KreORO_hyVCT4ZP3Te8HdIQBXOELgE5i3HzT7QmU/exec">
             <div class="form-row">
               <div class="col-12">
-                <input type="email" class="form-control form-control-lg" placeholder="Enter your email....">
+                <input type="email" id="e_mail" class="form-control form-control-lg" placeholder="Enter your email....">
               </div>
               <!-- <div class="col-12 col-md-3">
                 <button type="submit" class="btn btn-block btn-lg btn-primary">Notify me when available</button>
@@ -54,10 +53,9 @@
             <br>
             <div class="form-row justify-content-center">
               <div class="col-6">
-                  <button type="submit" class="btn btn-block btn-lg btn-primary">Notify me when available</button>
+                  <button type="submit" id="sendOrder" class="btn btn-block btn-lg btn-primary">Notify me when available</button>
               </div>
             </div>
-          </form>
         </div>
       </div>
     </div>
@@ -237,6 +235,60 @@
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="scripts/form-submission-handler.js"></script>
+  <script>
+      $(function(){
+          // 監聽 送出訂單 按鈕點擊
+          // 下面這段主要在組合資料，還有擋使用者不填資料不能送出
+          $('#sendOrder').click(function(e){
+          var status = true;
+          var email = $('#e_mail').val();
+          // 電話
+          
+          order = order.substring(0, order.length - 1);
+  
+          // 擋住不填資料邏輯
+          if(email == ''){
+            status = false;
+          }
+          
+          // 如果 �必填欄位都過了 才會到這邊
+          if(status){
+            // 增加日期資料
+            var currentdate = new Date();
+            var filltime = currentdate.getFullYear() + "/"
+                  + (currentdate.getMonth() + 1) + "/"
+                  + currentdate.getDate() + "  "
+                  + currentdate.getHours() + ":"
+                  + currentdate.getMinutes() + ":"
+                  + currentdate.getSeconds();
+            // 打包 要的資料
+            var data = {
+              'email' : email,
+              'time': filltime
+            }
+            // 呼叫 send ajax function
+            send(data);
+          }
+        });
+      });
+      function send(data){
+        $.ajax({
+          // 這邊用get type
+          type: "get",
+          // api url - google appscript 產出的 url
+          url: "https://script.google.com/macros/s/AKfycbz8_nt5KG33KreORO_hyVCT4ZP3Te8HdIQBXOELgE5i3HzT7QmU/exec",
+          // 剛剛整理好的資料帶入
+          data: data,
+          // 資料格式是JSON 
+          dataType: "JSON",
+          // 成功送出 會回頭觸發下面這塊感謝
+          success: function (response) {
+            console.log(response);
+            alert('yeah');
+          }
+        });
+      }
+    </script>
 
 </body>
 
