@@ -43,19 +43,19 @@
         </div>
         <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
             <div class="form-row">
-              <div class="col-12">
-                <input type="email" id="e_mail" class="form-control form-control-lg" placeholder="Enter your email....">
+              <div class="col-12 col-md-9 mb-2 mb-md-0">
+                <input type="email" id="e_mail1" class="form-control form-control-lg" placeholder="Enter your email...">
               </div>
-              <!-- <div class="col-12 col-md-3">
-                <button type="submit" class="btn btn-block btn-lg btn-primary">Notify me when available</button>
-              </div> -->
+              <div class="col-12 col-md-3">
+                <button type="submit" id="sendOrder1" class="btn btn-block btn-lg btn-primary">Notify me</button>
+              </div>
             </div>
-            <br>
+            <!-- <br>
             <div class="form-row justify-content-center">
               <div class="col-6">
-                  <button type="submit" id="sendOrder" class="btn btn-block btn-lg btn-primary">Notify me when available</button>
+                  <button type="submit" id="sendOrder1" class="btn btn-block btn-lg btn-primary">Notify me when available</button>
               </div>
-            </div>
+            </div> -->
         </div>
       </div>
     </div>
@@ -72,7 +72,7 @@
               <img class="step_img col-5"  src="img/step1.png">
             </div>
             <br>
-            <h3>Registe/h3>
+            <h3>Register</h3>
             <p class="lead mb-0">Register event on calendar</p>
           </div>
         </div>
@@ -166,16 +166,17 @@
     <div class="container">
       <div class="row">
         <div class="col-xl-9 mx-auto">
-          <h2 class="mb-4">Interested with it? Please leave your emailo!</h2>
+          <h2 class="mb-4">Interested with it? Please leave your email!</h2>
         </div>
         <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
           <form>
             <div class="form-row">
               <div class="col-12 col-md-9 mb-2 mb-md-0">
-                <input type="email" class="form-control form-control-lg" placeholder="Enter your email...">
+                <!-- <input type="email" class="form-control form-control-lg" placeholder="Enter your email..."> -->
+                <input type="email" id="e_mail2" class="form-control form-control-lg" placeholder="Enter your email...">
               </div>
               <div class="col-12 col-md-3">
-                <button type="submit" class="btn btn-block btn-lg btn-primary">Sign up!</button>
+                <button type="submit" id="sendOrder2" class="btn btn-block btn-lg btn-primary">Notify me!</button>
               </div>
             </div>
           </form>
@@ -238,11 +239,10 @@
   <script>
       $(function(){
 
-          $('#sendOrder').click(function(e){
+          $('#sendOrder1').click(function(e){
           var status = true;
-          var email = $('#e_mail').val();
-
-          if(email == ''){
+          var email1 = $('#e_mail1').val();
+          if(email1 == ''){
             status = false;
           }
           
@@ -257,7 +257,34 @@
                   + currentdate.getSeconds();
             // 打包 要的資料
             var data = {
-              'email' : email,
+              'email' : email1,
+              'time': filltime
+            }
+            // 呼叫 send ajax function
+            send(data);
+            console.log(filltime);
+          }
+        });
+
+        $('#sendOrder2').click(function(e){
+          var status = true;
+          var email2 = $('#e_mail2').val();
+          if(email2 == ''){
+            status = false;
+          }
+          
+          if(status){
+            // 增加日期資料
+            var currentdate = new Date();
+            var filltime = currentdate.getFullYear() + "/"
+                  + (currentdate.getMonth() + 1) + "/"
+                  + currentdate.getDate() + "  "
+                  + currentdate.getHours() + ":"
+                  + currentdate.getMinutes() + ":"
+                  + currentdate.getSeconds();
+            // 打包 要的資料
+            var data = {
+              'email' : email2,
               'time': filltime
             }
             // 呼叫 send ajax function
@@ -269,7 +296,7 @@
       function send(data){
         $.ajax({
           type: "GET",
-          url: "https://script.google.com/macros/s/AKfycbwPZkRMA2R8Dh25NvIzo8_jel2eqledPv9Qt24Gyt1dK4rWOxHC/exec",
+          url: "https://script.google.com/macros/s/AKfycbz8_nt5KG33KreORO_hyVCT4ZP3Te8HdIQBXOELgE5i3HzT7QmU/exec",
           data: data,
           dataType: "JSON",
           success: function (response) {
